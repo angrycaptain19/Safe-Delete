@@ -67,11 +67,7 @@ def main():
     This is because, if this script is aliased as "rm" by a user, the script will believe that the argument (e.g. -rf ) is the file to be deleted.
     To prevent that from happening, we always switch to the second user-provided argument.
     """
-    if len(sys.argv) > 2:
-        deleted_file += sys.argv[2]
-    else:
-        deleted_file += sys.argv[1]
-
+    deleted_file += sys.argv[2] if len(sys.argv) > 2 else sys.argv[1]
     # Check if file exists
     if os.path.isfile(deleted_file) == False:
         print(
@@ -93,15 +89,11 @@ def main():
         )
         answer = input("Enter Y/N to confirm: ")
 
-        if answer == "Y" or answer == "y":
+        if answer in ["Y", "y"]:
             command = "rm -rf " + deleted_file
             os.system(command)
             print("Chosen file(s) erased permanently from disk.")
-        elif answer == "N" or answer == "n":
-            command = "mv " + deleted_file + " ~/.local/share/Trash/files"
-            os.system(command)
-            print("Chosen file(s) moved to Trash instead.")
-        elif type(answer) == str:
+        elif answer in ["N", "n"] or type(answer) == str:
             command = "mv " + deleted_file + " ~/.local/share/Trash/files"
             os.system(command)
             print("Chosen file(s) moved to Trash instead.")
@@ -123,7 +115,7 @@ def main():
             + color.END
         )
         answer = input("Enter " + color.RED + "Y/N" + color.END + " to confirm: ")
-        if answer == "Y" or answer == "y":
+        if answer in ["Y", "y"]:
             command = "mv " + deleted_file + " ~/.local/share/Trash/files"
             os.system(command)
             print(color.CYAN + "Chosen file(s) moved to Trash." + color.END)
